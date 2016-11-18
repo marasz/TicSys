@@ -17,10 +17,7 @@ a{
 }
 
 header {
-    text-align: center;
-    width: 100%;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    padding: 40px 0px 40px 40px;
 }
 
 header,
@@ -47,12 +44,16 @@ nav {}
 }
 
 .navLi {
-    width: 25%;
     float: left;
     display: inline;
-    padding-top: 3px;
-    padding-bottom: 3px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 40px;
     text-align: center;
+}
+
+.navLi:first-child{
+    padding-left: 40px;
 }
 
 .navLi a {
@@ -69,17 +70,29 @@ nav {}
     text-align: center;
 }
 
-article {
-    border-color: F5F5F5;
+#event {
+    border-color: #F5F5F5;
     border-bottom-style: solid;
     border-bottom-color: #ecf0f1;
     border-bottom-width: 3px;
+    padding: 10px 0px 10px 0px;
+}
+
+#event img{
+    float: left;
+    margin: 0 10px 10px 0;
+}
+
+.event h2 {
+    margin-top: 0;
+}
+
+.event p {
+    margin: 10px 10px 10px 10px;
 }
 
 footer {
     padding: 5px 5px 5px 5px;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
 }
 
 #contactform input, #contactform textarea {

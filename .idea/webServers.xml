@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="6610bd2a-5cb6-4010-9594-a18019d8bc86" name="TicSys" url="http://localhost">
+        <fileTransfer port="0" mountedRoot="C:\Users\10391\PhpstormProjects\TicSys" accessType="MOUNT" />
+      </webServer>
+    </option>
+  </component>
+</project>

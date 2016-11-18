@@ -31,12 +31,11 @@ EOT;
         $data = fgetcsv($file, ',');
         echo '<a href="' . $_SERVER['REQUEST_URI'] . "/" . $data[0] . '">';
         echo '<div id = "event">';
+        echo '<H1>' . $data[1] . '</H1>';
+        echo '<H2>' . $data[2] . '</H2>';
         echo <<<EOT
     <img src="$data[4]"></img>
 EOT;
-
-        echo '<H1>' . $data[1] . '</H1>';
-        echo '<H2>' . $data[2] . '</H2>';
         echo '<p>' . $data[3] . '</p>';
         echo '</div>';
         echo '</a>';
