@@ -6,7 +6,7 @@
 body {
     width: 100%;
     background-color: #e0e0e0;
-    font-family: sans-serif;
+    font-family: "Times New Roman", Serif;
     align-content: center;
     color: #5C5B5B;
 }
@@ -20,6 +20,13 @@ header {
     padding: 40px 0px 40px 40px;
 }
 
+#feedbackimg{
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: block;
+}
+
 header,
 footer {
     background-color: #6C7A89;
@@ -29,7 +36,7 @@ nav {}
 
 .content {
     padding-top: 1px;
-    padding-left: 2%;
+    padding-left: 40px;
     padding-right: 2%;
     padding-bottom: 2em;
     background-color: white;
@@ -92,15 +99,28 @@ nav {}
 }
 
 footer {
-    padding: 5px 5px 5px 5px;
+    padding: 5px 5px 5px 40px;
+    color: white;
 }
 
 #contactform input, #contactform textarea {
     display: block;
+    margin-bottom: 1em;
+    margin-top: 1em;
 }
 
-#contactform #contactform-name {
-    display: none;
+#contactform input[type=text],#contactform textarea {
+    width: 30em;
+}
+
+#contactform input:focus, #contactform textarea:focus {
+    box-shadow: 0 0 5px 0 #2a9898;
+}
+
+#contactform label {
+    float: left;
+    width: 10em;
+    margin-right: 1em;
 }
 
 #contactform .missing {

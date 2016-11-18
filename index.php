@@ -15,6 +15,7 @@ include_once 'config/config.php';
 
 <body>
 <div id="wrapper">
+    <a href="/kontakt"><img id="feedbackimg" src="/images/feedback.png"></a>
     <header>
         <img src="/images/logo-black.png">
     </header>
@@ -32,7 +33,6 @@ include_once 'config/config.php';
                 }
 
                 ?>
-
             </ul>
         </nav>
 
