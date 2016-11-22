@@ -20,10 +20,12 @@ if (preg_match("/[0-9]+/", basename($_SERVER['REQUEST_URI']))) {
             echo <<<EOT
 <img src="$data[5]"></img>
 EOT;
+            echo '<p>';
             echo '<H1>' . $data[1] . '</H1>';
             echo '<H2>' . $data[2] . '</H2>';
             echo '<p>' . $data[3] . '</p>';
             echo '</div>';
+            echo '</p>';
         }
     };
 } else {

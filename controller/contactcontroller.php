@@ -27,22 +27,22 @@ if (preg_match('@/success$@i', $_SERVER['REQUEST_URI'])) {
 
 <form id="contactform" action="<?php URI_KONTAKT ?>" method="post" name="contactform">
     <label for="contactform-subject">Betreff</label>
-    <input type="text" id="contactform-subject" name="subject">
+    <input type="text" id="contactform-subject" name="subject" required>
 
     <label for="contactform-message">Mitteilung</label>
-    <textarea id="contactform-message" name="message" rows="8" cols="50"></textarea>
+    <textarea id="contactform-message" name="message" rows="8" cols="50" required></textarea>
 
     <label for="contactform-name">Name</label>
-    <input type="text" id="contactform-name" name="name">
+    <input type="text" id="contactform-name" name="name" required>
 
     <label for="contactform-first_name">Vorname</label>
-    <input type="text" id="contactform-first_name" name="first_name">
+    <input type="text" id="contactform-first_name" name="first_name" required>
 
     <label for="contactform-phone">Telefon-Nr.</label>
     <input type="text" id="contactform-phone" name="phone">
 
     <label for="contactform-email">Email-Adresse</label>
-    <input type="text" id="contactform-email" name="email">
+    <input type="text" id="contactform-email" name="email" required>
 
     <label for="contactform-newsletter">Newsletter abonnieren</label>
     <input type="checkbox" id="contactform-newsletter" name="newsletter" checked>
