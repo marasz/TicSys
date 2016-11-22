@@ -10,12 +10,12 @@ include_once 'resources/eventlist.php';
 };*/
 
 
-$file = fopen("resources/eventlist.csv","r");
+$file = fopen("resources/eventlist.csv", "r");
 
-if(preg_match("/[0-9]+/", basename($_SERVER['REQUEST_URI']))){
-    while(! feof($file)) {
+if (preg_match("/[0-9]+/", basename($_SERVER['REQUEST_URI']))) {
+    while (!feof($file)) {
         $data = fgetcsv($file, ',');
-        if($data[0] == basename($_SERVER['REQUEST_URI'])){
+        if ($data[0] == basename($_SERVER['REQUEST_URI'])) {
             echo '<div id = "event">';
             echo <<<EOT
 <img src="$data[5]"></img>

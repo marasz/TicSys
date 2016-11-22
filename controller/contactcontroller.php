@@ -1,14 +1,14 @@
 <?php
-    if (preg_match('@/success$@i', $_SERVER['REQUEST_URI'])) {
-        // show confirmation page
-        echo "<p>Vielen Dank für Ihre Anfrage, wir setzen uns sobald wie möglich mit Ihnen in Verbindung.</p>";
-    } else if ((!empty($_POST['contact'])) && (empty($_POST['name']))) {
+if (preg_match('@/success$@i', $_SERVER['REQUEST_URI'])) {
+    // show confirmation page
+    echo "<p>Vielen Dank für Ihre Anfrage, wir setzen uns sobald wie möglich mit Ihnen in Verbindung.</p>";
+} else if ((empty($_POST['contact'])) && (empty($_POST['name']))) {
     // Form submitted by human
     // validate form
     $valid = true;
-    $valid &=!empty($_POST['subject']);
-    $valid &=!empty($_POST['message']);
-    $valid &=!empty($_POST['email']);
+    $valid &= !empty($_POST['subject']);
+    $valid &= !empty($_POST['message']);
+    $valid &= !empty($_POST['email']);
 
     if ($valid) {
         $message = "Vom Benutzer erfasste Daten:\n\n";

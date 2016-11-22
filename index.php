@@ -14,8 +14,8 @@ include_once 'config/config.php';
 </head>
 
 <body>
+<a href="/kontakt"><img id="feedbackimg" src="/images/feedback.png"></a>
 <div id="wrapper">
-    <a href="/kontakt"><img id="feedbackimg" src="/images/feedback.png"></a>
     <header>
         <img src="/images/logo-black.png">
     </header>
