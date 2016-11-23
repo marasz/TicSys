@@ -1,21 +1,13 @@
 <?php
-include_once 'resources/eventlist.php';
-
-/*foreach ($events as $key => $event){
-        echo '<div id = "event">';
-        echo '<H1>' . $event['title'] . '</H1>';
-        echo '<H2>' . $event['date'] . '</H2>';
-        echo '<p>' . $event['description'] . '</p>';
-        echo '</div>';
-};*/
+include_once 'lib/CSVAdapter.php';
 
 
-$file = fopen("resources/eventlist.csv", "r");
+$csvAdater = new CSVAdapter(fopen("resources/eventlist.csv", "r"));
 
-if (preg_match("/[0-9]+/", basename($_SERVER['REQUEST_URI']))) {
-    while (!feof($file)) {
+if (preg_match("/[0-9]+/", basename($_SERVER['REQUEST_URI']), $matches)) {
+        $file = $csvAdater ->getEventList();
         $data = fgetcsv($file, ',');
-        if ($data[0] == basename($_SERVER['REQUEST_URI'])) {
+        if ($data[0] == $matches[0]) {
             echo '<div id = "event">';
             echo <<<EOT
 <img src="$data[5]"></img>
@@ -27,7 +19,6 @@ EOT;
             echo '</div>';
             echo '</p>';
         }
-    };
 } else {
     while (!feof($file)) {
         $data = fgetcsv($file, ',');

@@ -4,5 +4,5 @@
 class Video
 {
     private $name;
-    private $video;
+    private $file;
 }

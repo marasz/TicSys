@@ -1,27 +1,11 @@
 <?php
 if (preg_match('@/success$@i', $_SERVER['REQUEST_URI'])) {
-    // show confirmation page
     echo "<p>Vielen Dank für Ihre Anfrage, wir setzen uns sobald wie möglich mit Ihnen in Verbindung.</p>";
-} else if ((empty($_POST['contact'])) && (empty($_POST['name']))) {
-    // Form submitted by human
-    // validate form
-    $valid = true;
-    $valid &= !empty($_POST['subject']);
-    $valid &= !empty($_POST['message']);
-    $valid &= !empty($_POST['email']);
-
-    if ($valid) {
-        $message = "Vom Benutzer erfasste Daten:\n\n";
-        foreach ($_POST as $key => $value) {
-            $message .= "$key: $value\n";
-        }
+} else if(!empty($_POST['contactform_submit'])){
         mail("maurostehle@gmail.com", "TicSys - Kontaktformular", $message);
         header("HTTP/1.1 303 See Other");
         header("Location: " . URI_KONTAKT . "/success");
         exit();
-    } else {
-        echo "<p>Bitte füllen Sie alle markierten Felder aus.</p>";
-    }
 }
 ?>
 

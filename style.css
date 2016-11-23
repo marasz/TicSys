@@ -18,6 +18,8 @@ a{
 
 header {
     padding: 40px 0px 40px 40px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
 }
 
 #feedbackimg{
@@ -29,7 +31,7 @@ header {
 
 header,
 footer {
-    background-color: #6C7A89;
+    background-color: #049372;
 }
 
 nav {}
@@ -101,6 +103,8 @@ nav {}
 footer {
     padding: 5px 5px 5px 40px;
     color: white;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
 }
 
 #contactform input, #contactform textarea {
