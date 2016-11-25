@@ -1,36 +1,38 @@
 <?php
-include_once 'lib/CSVAdapter.php';
+include_once '/lib/CSVAdapter.php';
 
 
-$csvAdater = new CSVAdapter(fopen("resources/eventlist.csv", "r"));
+$csvAdapter = new CSVAdapter("resources/eventlist.csv");
 
 if (preg_match("/[0-9]+/", basename($_SERVER['REQUEST_URI']), $matches)) {
-        $file = $csvAdater ->getEventList();
-        $data = fgetcsv($file, ',');
-        if ($data[0] == $matches[0]) {
+    $event = $csvAdapter -> getEvent($matches[0]);
+        if ($event -> getId() == $matches[0]) {
+            $artist = $event ->getArtist();
+            $picture = $artist ->getPicture();
             echo '<div id = "event">';
+
             echo <<<EOT
-<img src="$data[5]"></img>
+<img src="$picture"></img>
 EOT;
             echo '<p>';
-            echo '<H1>' . $data[1] . '</H1>';
-            echo '<H2>' . $data[2] . '</H2>';
-            echo '<p>' . $data[3] . '</p>';
+            echo '<H1>' . $event -> getName() . '</H1>';
+            echo '<H2>' . $event -> getStarttime() . '</H2>';
+            echo '<p>' . $artist -> getDescription() . '</p>';
             echo '</div>';
             echo '</p>';
         }
 } else {
-    while (!feof($file)) {
-        $data = fgetcsv($file, ',');
-        echo '<a href="' . $_SERVER['REQUEST_URI'] . "/" . $data[0] . '">';
+    $eventList = $csvAdapter -> getEventList();
+    foreach ($eventList as $event) {
+        $artist = $event -> getArtist();
+        echo '<a href="' . $_SERVER['REQUEST_URI'] . "/" . $eventList[1] -> getId(). '">';
         echo '<div id = "event">';
-        echo '<H1>' . $data[1] . '</H1>';
-        echo '<H2>' . $data[2] . '</H2>';
-        echo <<<EOT
-    <img src="$data[4]"></img>
-EOT;
-        echo '<p>' . $data[3] . '</p>';
+        echo '<H1>' . $artist -> getName() . '</H1>';
+        echo '<H2>' . $event -> getStarttime() . '</H2>';
+        echo '<img src="' . $artist -> getTumbnail() . '"></img>';
+        echo '<p>' . $artist -> getDescription() . '</p>';
         echo '</div>';
         echo '</a>';
     };
+
 }

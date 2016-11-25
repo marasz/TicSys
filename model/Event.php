@@ -9,7 +9,22 @@ class Event
     private $artist;
 
     /**
-     * @return mixed
+     * Event constructor.
+     * @param $id
+     * @param $name
+     * @param $starttime
+     * @param $artist
+     */
+    public function __construct($id, $name, $starttime, $artist)
+    {
+        $this->id = $id;
+        $this->name = $name;
+        $this->starttime = $starttime;
+        $this->artist = $artist;
+    }
+
+    /**
+     * @return
      */
     public function getId()
     {
@@ -33,7 +48,7 @@ class Event
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      */
     public function setName($name)
     {
@@ -41,7 +56,7 @@ class Event
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getStarttime()
     {
@@ -49,7 +64,7 @@ class Event
     }
 
     /**
-     * @param mixed $starttime
+     * @param string $starttime
      */
     public function setStarttime($starttime)
     {
@@ -57,7 +72,7 @@ class Event
     }
 
     /**
-     * @return mixed
+     * @return Artist
      */
     public function getArtist()
     {
@@ -65,7 +80,7 @@ class Event
     }
 
     /**
-     * @param mixed $artist
+     * @param Artist $artist
      */
     public function setArtist($artist)
     {
