@@ -25,7 +25,7 @@ EOT;
     $eventList = $csvAdapter -> getEventList();
     foreach ($eventList as $event) {
         $artist = $event -> getArtist();
-        echo '<a href="' . $_SERVER['REQUEST_URI'] . "/" . $eventList[1] -> getId(). '">';
+        echo '<a href="' . $_SERVER['REQUEST_URI'] . "/" . $event -> getId(). '">';
         echo '<div id = "event">';
         echo '<H1>' . $artist -> getName() . '</H1>';
         echo '<H2>' . $event -> getStarttime() . '</H2>';
