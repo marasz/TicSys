@@ -1,6 +1,5 @@
 <?php
-include_once '/lib/CSVAdapter.php';
-
+include_once 'lib/CSVAdapter.php';
 
 $csvAdapter = new CSVAdapter("resources/eventlist.csv");
 

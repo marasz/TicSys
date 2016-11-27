@@ -1,6 +1,6 @@
 <?php
-include_once '/model/Event.php';
-include_once '/model/Artist.php';
+include_once 'model/Event.php';
+include_once 'model/Artist.php';
 
 class CSVAdapter
 {
