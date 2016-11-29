@@ -5,28 +5,28 @@ class Artist
     private $name;
     private $descrition;
     private $picture;
-    private $tumbnail;
+    private $thumbnail;
     private $videos;
 
     /**
      * Artist constructor.
      * @param string $name
      * @param string $descrition
-     * @param string $picture
-     * @param string $tumbnail
+     * @param string $picturePath
+     * @param string $thumbnailPath
      */
-    public function __construct($name, $descrition, $picture, $tumbnail)
+    public function __construct(string $name, string $descrition, string $picturePath, string $thumbnailPath)
     {
         $this->name = $name;
         $this->descrition = $descrition;
-        $this->picture = $picture;
-        $this->tumbnail = $tumbnail;
+        $this->picture = $picturePath;
+        $this->thumbnail = $thumbnailPath;
     }
 
     /**
      * @return string
      */
-    public function getName()
+    public function getName() : string
     {
         return $this->name;
     }
@@ -34,7 +34,7 @@ class Artist
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescription() : string
     {
         return $this->descrition;
     }
@@ -42,7 +42,7 @@ class Artist
     /**
      * @return string
      */
-    public function getPicture()
+    public function getPicturePath() : string
     {
         return $this->picture;
     }
@@ -50,9 +50,9 @@ class Artist
     /**
      * @return string
      */
-    public function getTumbnail()
+    public function getThumbnailPath() : string
     {
-        return $this->tumbnail;
+        return $this->thumbnail;
     }
 
 

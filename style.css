@@ -85,6 +85,7 @@ nav {}
     border-bottom-color: #ecf0f1;
     border-bottom-width: 3px;
     padding: 10px 0px 10px 0px;
+    overflow: auto;
 }
 
 #event img{

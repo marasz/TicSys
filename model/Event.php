@@ -15,7 +15,7 @@ class Event
      * @param $starttime
      * @param $artist
      */
-    public function __construct($id, $name, $starttime, $artist)
+    public function __construct(int $id,string $name,string $starttime,Artist $artist)
     {
         $this->id = $id;
         $this->name = $name;
@@ -26,7 +26,7 @@ class Event
     /**
      * @return
      */
-    public function getId()
+    public function getId() : int
     {
         return $this->id;
     }
@@ -34,7 +34,7 @@ class Event
     /**
      * @param mixed $id
      */
-    public function setId($id)
+    public function setId(int $id)
     {
         $this->id = $id;
     }
@@ -42,7 +42,7 @@ class Event
     /**
      * @return mixed
      */
-    public function getName()
+    public function getName() : string
     {
         return $this->name;
     }
@@ -50,7 +50,7 @@ class Event
     /**
      * @param string $name
      */
-    public function setName($name)
+    public function setName(string $name)
     {
         $this->name = $name;
     }
@@ -58,7 +58,7 @@ class Event
     /**
      * @return string
      */
-    public function getStarttime()
+    public function getStarttime() : string
     {
         return $this->starttime;
     }
@@ -66,7 +66,7 @@ class Event
     /**
      * @param string $starttime
      */
-    public function setStarttime($starttime)
+    public function setStarttime(string $starttime)
     {
         $this->starttime = $starttime;
     }
@@ -74,7 +74,7 @@ class Event
     /**
      * @return Artist
      */
-    public function getArtist()
+    public function getArtist() : Artist
     {
         return $this->artist;
     }
@@ -82,7 +82,7 @@ class Event
     /**
      * @param Artist $artist
      */
-    public function setArtist($artist)
+    public function setArtist(Artist $artist)
     {
         $this->artist = $artist;
     }

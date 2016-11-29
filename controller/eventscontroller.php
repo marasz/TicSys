@@ -7,7 +7,7 @@ if (preg_match("/[0-9]+/", basename($_SERVER['REQUEST_URI']), $matches)) {
     $event = $csvAdapter -> getEvent($matches[0]);
         if ($event -> getId() == $matches[0]) {
             $artist = $event ->getArtist();
-            $picture = $artist ->getPicture();
+            $picture = $artist ->getPicturePath();
             echo '<div id = "event">';
 
             echo <<<EOT
@@ -28,7 +28,7 @@ EOT;
         echo '<div id = "event">';
         echo '<H1>' . $artist -> getName() . '</H1>';
         echo '<H2>' . $event -> getStarttime() . '</H2>';
-        echo '<img src="' . $artist -> getTumbnail() . '"></img>';
+        echo '<img src="' . $artist -> getThumbnailPath() . '"></img>';
         echo '<p>' . $artist -> getDescription() . '</p>';
         echo '</div>';
         echo '</a>';

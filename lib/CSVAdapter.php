@@ -11,7 +11,7 @@ class CSVAdapter
      * CSVAdapter constructor.
      * @param $csvFile
      */
-    public function __construct($csvFile)
+    public function __construct(string $csvFile)
     {
         $this -> csvFile = fopen($csvFile , "r");
     }
@@ -19,7 +19,7 @@ class CSVAdapter
     /**
      * @return array
      */
-    public function getEventList()
+    public function getEventList() : array
     {
         $eventList = array();
         while (!feof($this->csvFile)) {
@@ -35,7 +35,7 @@ class CSVAdapter
      * @param int $eventID
      * @return Event
      */
-    public function getEvent($eventID)
+    public function getEvent($eventID) : Event
     {
        $eventList = $this -> getEventList();
        foreach ($eventList as $event){
