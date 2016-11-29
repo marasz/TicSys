@@ -85,4 +85,6 @@ include_once 'config/config.php';
         return "/" . $url_folder;
     }
 ?>
+
+/* test */
 </html>
