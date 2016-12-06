@@ -6,21 +6,18 @@ class Event
     private $id;
     private $name;
     private $starttime;
-    private $artist;
 
     /**
      * Event constructor.
      * @param $id
      * @param $name
      * @param $starttime
-     * @param $artist
      */
-    public function __construct(int $id,string $name,string $starttime,Artist $artist)
+    public function __construct(int $id,string $name,string $starttime)
     {
         $this->id = $id;
         $this->name = $name;
         $this->starttime = $starttime;
-        $this->artist = $artist;
     }
 
     /**
@@ -69,22 +66,6 @@ class Event
     public function setStarttime(string $starttime)
     {
         $this->starttime = $starttime;
-    }
-
-    /**
-     * @return Artist
-     */
-    public function getArtist() : Artist
-    {
-        return $this->artist;
-    }
-
-    /**
-     * @param Artist $artist
-     */
-    public function setArtist(Artist $artist)
-    {
-        $this->artist = $artist;
     }
 
 

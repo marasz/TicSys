@@ -1,5 +1,6 @@
 <?php
 include_once 'model/Event.php';
+include_once 'model/MusicEvent.php';
 include_once 'model/Artist.php';
 
 class CSVAdapter
@@ -25,7 +26,7 @@ class CSVAdapter
         while (!feof($this->csvFile)) {
             $eventInfos = fgetcsv($this->csvFile, ',');
             $artist = new Artist($eventInfos[1],$eventInfos[3], $eventInfos[5], $eventInfos[4]);
-            $event = new Event($eventInfos[0], $eventInfos[1], $eventInfos[2], $artist);
+            $event = new MusicEvent($eventInfos[0], $eventInfos[1], $eventInfos[2], $artist);
             $eventList[] = $event;
         };
         return $eventList;

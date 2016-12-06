@@ -15,7 +15,7 @@ class Artist
      * @param string $picturePath
      * @param string $thumbnailPath
      */
-    public function __construct(string $name, string $descrition, string $picturePath, string $thumbnailPath)
+    public function __construct(string $name = "", string $descrition = "", string $picturePath = "", string $thumbnailPath = "")
     {
         $this->name = $name;
         $this->descrition = $descrition;
@@ -54,6 +54,27 @@ class Artist
     {
         return $this->thumbnail;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getVideos() : array
+    {
+        return $this->videos;
+    }
+
+    /**
+     * @param mixed $videos
+     */
+    public function setVideos(array $videos)
+    {
+        $this->videos = $videos;
+    }
+
+    public function addVideo(Video $video){
+        $this -> $video[] = $video;
+    }
+
 
 
 
