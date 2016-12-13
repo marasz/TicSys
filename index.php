@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <?php
 include_once 'config/config.php';
+include_once 'controller/Controller.php';
 ?>
 <html>
 
@@ -23,7 +24,7 @@ include_once 'config/config.php';
             <ul class="navUl">
 
                 <?php
-                $navigation = getMenu();
+                $navigation = Controller::getMenu();
                 foreach ($navigation as $href => $title) {
                     $liContent = $title;
                     if ($href != strtolower($_SERVER['REQUEST_URI'])) {
@@ -38,15 +39,7 @@ include_once 'config/config.php';
 
     <div id="content" class="content">
         <?php
-            switch (getSelectedMenuPoint()){
-                case URI_EVENTS:
-                    include_once 'controller/eventscontroller.php';
-                    break;
-
-                case URI_KONTAKT:
-                    include_once 'controller/contactcontroller.php';
-                    break;
-            }
+           Controller::route();
         ?>
 
     </div>
@@ -56,33 +49,4 @@ include_once 'config/config.php';
     </footer>
 </div>
 </body>
-<?php
-    function getMenu(){
-        $navigation = array(
-            URI_HOME => 'Home',
-            URI_EVENTS => 'Events',
-            URI_FAQ => 'FAQ',
-            URI_KONTAKT => 'Kontakt'
-        );
-        return $navigation;
-    }
-
-/**
- * returns the current 1th Folder.
- *
- * @author  Mauro Stehle
- *
- * @since 1.0
- *
- *
- */
-
-    function getSelectedMenuPoint(){
-
-        $url_array = parse_url($_SERVER['REQUEST_URI']);
-        preg_match('@/(?<path>[^/]+)@', $url_array['path'], $m);
-        $url_folder = $m['path'];
-        return "/" . $url_folder;
-    }
-?>
 </html>
