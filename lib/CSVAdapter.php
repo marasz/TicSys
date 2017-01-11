@@ -1,50 +1,67 @@
 <?php
-include_once 'model/Event.php';
-include_once 'model/MusicEvent.php';
-include_once 'model/Artist.php';
 
-class CSVAdapter
-{
-    private $csvFile;
-
+class CSVAdapter {
 
     /**
-     * CSVAdapter constructor.
-     * @param $csvFile
+     * The absolute path of the csv file
+     * @var string 
      */
-    public function __construct(string $csvFile)
-    {
-        $this -> csvFile = fopen($csvFile , "r");
+    private $filePath;
+
+    /**
+     * @param string $filePath 
+     */
+    function __construct($filePath) {
+        $this->filePath = $filePath;
+    }
+
+    public function getFilePath() {
+        return $this->filePath;
     }
 
     /**
-     * @return array
+     * Returns the event by given id if present, null otherwise
+     * @param int $id
+     * @return Event 
      */
-    public function getEventList() : array
-    {
-        $eventList = array();
-        while (!feof($this->csvFile)) {
-            $eventInfos = fgetcsv($this->csvFile, ',');
-            $artist = new Artist($eventInfos[1],$eventInfos[3], $eventInfos[5], $eventInfos[4]);
-            $event = new MusicEvent($eventInfos[0], $eventInfos[1], $eventInfos[2], $artist);
-            $eventList[] = $event;
-        };
-        return $eventList;
+    public function getEvent($id) {
+        $list = $this->getEventList();
+        if (!empty($list) && array_key_exists($id, $list)) {
+            return $list[$id];
+        }
+        return null;
     }
 
     /**
-     * @param int $eventID
-     * @return Event
+     * @return array list of all events in csv file 
      */
-    public function getEvent($eventID) : Event
-    {
-       $eventList = $this -> getEventList();
-       foreach ($eventList as $event){
-           if(($event -> getId()) == $eventID){
-               return $event;
-           }
-       }
+    public function getEventList() {
+        $list = array();
+        /*
+         * event csv structure
+         * ---------------
+         * 0 => ID
+         * 1 => Title
+         * 2 => Start Unix Timestamp
+         * 3 => Image
+         * 4 => Image Thumbnail
+         * 5 => Description
+         */
+        $handle = fopen($this->filePath, "r");
+        if ($handle !== false) {
+            while (!feof($handle)) {
+                $entry = fgetcsv($handle);
+                $artist = new Artist($entry[1], $entry[3], $entry[4], $entry[5]);
+                $event = new MusicEvent($entry[0]);
+                $event->setName($artist->getName());
+                $event->setStarttime($entry[2]);
+                $event->setArtist($artist);
+                $list[$event->getId()] = $event;
+            }
+            fclose($handle);
+        }
+        return $list;
     }
-
 
 }
+

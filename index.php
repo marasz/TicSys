@@ -1,52 +1,155 @@
-<!DOCTYPE html>
 <?php
-include_once 'config/config.php';
-include_once 'controller/Controller.php';
+session_start();
+include_once "{$_SERVER['DOCUMENT_ROOT']}/config/config.php";
+include_once "{$_SERVER['DOCUMENT_ROOT']}/lib/vendor/KLogger.php";
 ?>
-<html>
+<!doctype html>
+<html lang="de">
+    <head>
+        <title>TicSys</title>
+        <meta name="description" content="TicSys ist eine Applikation zum Vertrieb von Event-Eintrittskarten.">
+        <meta name="author" content="Marc Jenzer">
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="/css/normalize.css">
+        <link rel="stylesheet" type="text/css" href="/css/application.css">
+        <script src="/js/vendor/jquery-1.9.0.min.js"></script>
+        <script src="/js/application.js"></script>
+        <script src="/js/timer.js"></script>
+    </head>
+    <body onload="setDateTime()">
+        <div id="login-overlay"><div> </div></div>
+        <div id="wrap">
+            <div id="header">
+                <div id="logo">
+                    <a href="/home"><img src="/images/logo-white.png" alt="TicSys Logo" width="295" height="70" /></a>
+                </div>
+                <div id="meta-navigation">
+                    <ul>
+                        <?php
+                        $metaMenu = getMetaMenu();
+                        $metaMenuCount = count($metaMenu);
+                        $counter = 0;
+                        foreach ($metaMenu as $href => $title) {
+                            $counter += 1;
+                            if (($href == URI_LOGIN) && (!empty($_SESSION['user_name']))) { // logged in
+                                echo "<li><strong>{$_SESSION['customer_name']}</strong> <a href=\"" . URI_LOGOUT . "\">Logout</a>";
+                            } else {
+                                echo "<li><a id=\"login-link\" href=\"$href\">$title</a>";
+                            }
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="There's a lot to do.">
-    <meta name="author" content="Mauro">
-    <link rel="stylesheet" href="/style.css">
-    <title>Hello World</title>
-</head>
+                            if ($counter < $metaMenuCount) {
+                                echo "|";
+                            }
+                            echo "</li>\n";
+                        }
+                        ?>
+                    </ul>
+                </div>
+                <div class="clear"></div>
+            </div>
 
-<body>
-<a href="<?php echo URI_KONTAKT ?>"><img id="feedbackimg" src="/images/feedback.png"></a>
-<div id="wrapper">
-    <header>
-        <img src="/images/logo-black.png">
-    </header>
-        <nav>
-            <ul class="navUl">
-
-                <?php
-                $navigation = Controller::getMenu();
-                foreach ($navigation as $href => $title) {
-                    $liContent = $title;
-                    if ($href != strtolower($_SERVER['REQUEST_URI'])) {
-                        $liContent = "<a href=\"$href\">$title</a>";
+            <div id="menu">
+                <ul>
+                    <?php
+                    $currentUri = getCurrentURI();
+                    foreach (getMenu() as $href => $title) {
+                        echo "<li><a href=\"$href\" " . (($href == $currentUri) ? "class=\"selected\" " : "") . ">$title</a></li>\n";
                     }
-                    echo "<li class=\"navLi\">$liContent</li>\n";
+                    ?>
+                </ul>
+            </div>
+
+            <div id="content">
+                <?php
+                $controller = null;
+                switch (getCurrentURI()) {
+                    case URI_EVENTS:
+                        include_once 'controller/EventController.php';
+                        $controller = new EventController();
+                        break;
+                    case URI_FAQ:
+                        include_once 'controller/FAQController.php';
+                        $controller = new FAQController();
+                        break;
+                    case URI_KONTAKT:
+                        include_once 'controller/ContactController.php';
+                        $controller = new ContactController();
+                        break;
+                    case URI_REGISTRATION:
+                        include_once 'controller/RegistrationController.php';
+                        $controller = new RegistrationController();
+                        break;
+                    case URI_LOGIN:
+                        include_once 'controller/LoginController.php';
+                        $controller = new LoginController();
+                        break;
+                    case URI_LOGOUT:
+                        include_once 'controller/LogoutController.php';
+                        $controller = new LogoutController();
+                        break;
+                    default :
+                        include_once 'controller/HomeController.php';
+                        $controller = new HomeController();
+                        break;
                 }
-
+                if ($controller != null) {
+                    $controller->route();
+                }
                 ?>
-            </ul>
-        </nav>
+            </div>
 
-    <div id="content" class="content">
-        <?php
-           Controller::route();
-        ?>
-
-    </div>
-    <footer>
-        <p>Copyright &copy; 2012 -
-            <?php echo date('Y') ?> TicSys</p>
-    </footer>
-</div>
-</body>
+            <div id="footer">
+                <p>Copyright &copy; 2012 TicSys, <span id="datetime"><?php echo date("d.m.Y H:i:s"); ?></span></p>
+            </div>
+        </div>
+        <a id="feedback" href="<?php echo URI_KONTAKT ?>"><img src="/images/feedback.png" border="0"></a>
+    </body>
 </html>
+<?php
+
+/**
+ * @return array containing all menu items in format [base href] => [title]
+ */
+function getMenu() {
+    return array(
+        URI_HOME => 'Home',
+        URI_EVENTS => 'Events',
+        URI_FAQ => 'FAQ',
+        URI_KONTAKT => 'Kontakt'
+    );
+}
+
+/**
+ * @return array containing all meta menu items in format [base href] => [title]
+ */
+function getMetaMenu() {
+    return array(
+        URI_LOGIN => 'Login',
+        URI_REGISTRATION => 'Registration'
+    );
+}
+
+function getSpecialRoutes() {
+    return array(URI_LOGOUT);
+}
+
+/**
+ * @return string the requested menu item URI
+ */
+function getCurrentURI() {
+    $menu = getMenu();
+    $metaMenu = getMetaMenu();
+    if ((array_key_exists($_SERVER['REQUEST_URI'], $menu)) ||
+            (array_key_exists($_SERVER['REQUEST_URI'], $metaMenu)) || 
+            (in_array($_SERVER['REQUEST_URI'], getSpecialRoutes()))) {
+        return $_SERVER['REQUEST_URI'];
+    } else {
+        foreach (array_merge(array_keys($menu), array_keys($metaMenu)) as $href) {
+            if (preg_match("@^$href@", $_SERVER['REQUEST_URI'])) {
+                return $href;
+            }
+        }
+    }
+    return key($menu);
+}
+?>

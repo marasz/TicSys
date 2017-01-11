@@ -1,72 +1,66 @@
 <?php
-include_once 'Artist.php';
 
-class Event
-{
-    private $id;
-    private $name;
-    private $starttime;
+class Event {
 
     /**
-     * Event constructor.
-     * @param $id
-     * @param $name
-     * @param $starttime
+     * Event ID
+     * @var int 
      */
-    public function __construct(int $id,string $name,string $starttime)
-    {
+    protected $id;
+
+    /**
+     * Name of the event
+     * @var string 
+     */
+    protected $name;
+
+    /**
+     * Event start time, Unix Timestamp Format
+     * @var int 
+     */
+    protected $starttime;
+
+    /**
+     * Array of objects of type Price
+     * 
+     * @var array
+     */
+    protected $prices = array();
+
+    function __construct($id = 0) {
         $this->id = $id;
-        $this->name = $name;
-        $this->starttime = $starttime;
     }
 
-    /**
-     * @return
-     */
-    public function getId() : int
-    {
+    public function getId() {
         return $this->id;
     }
 
-    /**
-     * @param mixed $id
-     */
-    public function setId(int $id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getName() : string
-    {
+    public function getName() {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
-    public function setName(string $name)
-    {
+    public function setName($name) {
         $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
-    public function getStarttime() : string
-    {
+    public function getStarttime() {
         return $this->starttime;
     }
 
-    /**
-     * @param string $starttime
-     */
-    public function setStarttime(string $starttime)
-    {
+    public function setStarttime($starttime) {
         $this->starttime = $starttime;
     }
 
+    public function getPrices() {
+        return $this->prices;
+    }
+
+    public function setPrices($prices) {
+        $this->prices = $prices;
+    }
+
+    public function addPrice(Price $price) {
+        $this->prices[] = $price;
+    }
 
 }
