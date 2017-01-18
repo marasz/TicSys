@@ -7,11 +7,8 @@ class HomeView extends View {
         echo "<div id=\"homeslider-wrap\">\n";
         echo "  <div id=\"homeslider\">\n";
         echo "    <ul>\n";
-        foreach ($this->list as $event) {
-            $date = new DateTime($event->getStarttime());
-            $date->setTimezone(new DateTimeZone('Europe/Zurich'));
-            $startTime = $date->format('d.m.Y H:i');
-            
+        foreach ($this->vars['list'] as $event) {
+            $startTime = date("d.m.Y H:i", $event->getStarttime());
             $url = URI_EVENTS . "/{$event->getId()}-" . Controller::encodeUrl("{$event->getName()}-{$startTime}");
             $artist = $event->getArtist();
             echo "      <li data-info=\"" . htmlentities($event->getName() . " " . $startTime) . "\"><a href=\"$url\"><img src=\"/resources/{$artist->getImage()}\" alt=\"{$artist->getName()}\" /></a></li>\n";

@@ -1,1 +1,0 @@
-2015-07-30 8:22:46 - INFO --> Show detail view of event ID: 3, Name: Keane, StartTime: 2013-03-12T19:00:00Z, Artist -> Name: Keane, Description: Keane ist eine englische Rockband aus..., Videos: no

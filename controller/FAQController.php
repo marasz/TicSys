@@ -16,7 +16,7 @@ class FAQController extends Controller {
 
     protected function index() {
         $view = new FAQListView();
-        $view->list = $this->mysqlAdapter->getFAQs();
+        $view->assign('list', $this->mysqlAdapter->getFAQs());
         $view->display();
     }
 

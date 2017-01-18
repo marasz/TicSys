@@ -1,9 +1,8 @@
+﻿<!doctype html>
 <?php
-session_start();
-include_once "{$_SERVER['DOCUMENT_ROOT']}/config/config.php";
-include_once "{$_SERVER['DOCUMENT_ROOT']}/lib/vendor/KLogger.php";
+include_once 'config/config.php';
 ?>
-<!doctype html>
+
 <html lang="de">
     <head>
         <title>TicSys</title>
@@ -12,40 +11,17 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/lib/vendor/KLogger.php";
         <meta charset="utf-8">
         <link rel="stylesheet" type="text/css" href="/css/normalize.css">
         <link rel="stylesheet" type="text/css" href="/css/application.css">
-        <script src="/js/vendor/jquery-1.9.0.min.js"></script>
+        <script src="/js/vendor/jquery-1.8.3.min.js"></script>
         <script src="/js/application.js"></script>
         <script src="/js/timer.js"></script>
     </head>
     <body onload="setDateTime()">
-        <div id="login-overlay"><div> </div></div>
+
         <div id="wrap">
             <div id="header">
                 <div id="logo">
                     <a href="/home"><img src="/images/logo-white.png" alt="TicSys Logo" width="295" height="70" /></a>
                 </div>
-                <div id="meta-navigation">
-                    <ul>
-                        <?php
-                        $metaMenu = getMetaMenu();
-                        $metaMenuCount = count($metaMenu);
-                        $counter = 0;
-                        foreach ($metaMenu as $href => $title) {
-                            $counter += 1;
-                            if (($href == URI_LOGIN) && (!empty($_SESSION['user_name']))) { // logged in
-                                echo "<li><strong>{$_SESSION['customer_name']}</strong> <a href=\"" . URI_LOGOUT . "\">Logout</a>";
-                            } else {
-                                echo "<li><a id=\"login-link\" href=\"$href\">$title</a>";
-                            }
-
-                            if ($counter < $metaMenuCount) {
-                                echo "|";
-                            }
-                            echo "</li>\n";
-                        }
-                        ?>
-                    </ul>
-                </div>
-                <div class="clear"></div>
             </div>
 
             <div id="menu">
@@ -74,18 +50,6 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/lib/vendor/KLogger.php";
                     case URI_KONTAKT:
                         include_once 'controller/ContactController.php';
                         $controller = new ContactController();
-                        break;
-                    case URI_REGISTRATION:
-                        include_once 'controller/RegistrationController.php';
-                        $controller = new RegistrationController();
-                        break;
-                    case URI_LOGIN:
-                        include_once 'controller/LoginController.php';
-                        $controller = new LoginController();
-                        break;
-                    case URI_LOGOUT:
-                        include_once 'controller/LogoutController.php';
-                        $controller = new LogoutController();
                         break;
                     default :
                         include_once 'controller/HomeController.php';
@@ -120,31 +84,14 @@ function getMenu() {
 }
 
 /**
- * @return array containing all meta menu items in format [base href] => [title]
- */
-function getMetaMenu() {
-    return array(
-        URI_LOGIN => 'Login',
-        URI_REGISTRATION => 'Registration'
-    );
-}
-
-function getSpecialRoutes() {
-    return array(URI_LOGOUT);
-}
-
-/**
  * @return string the requested menu item URI
  */
 function getCurrentURI() {
     $menu = getMenu();
-    $metaMenu = getMetaMenu();
-    if ((array_key_exists($_SERVER['REQUEST_URI'], $menu)) ||
-            (array_key_exists($_SERVER['REQUEST_URI'], $metaMenu)) || 
-            (in_array($_SERVER['REQUEST_URI'], getSpecialRoutes()))) {
+    if (array_key_exists($_SERVER['REQUEST_URI'], $menu)) {
         return $_SERVER['REQUEST_URI'];
     } else {
-        foreach (array_merge(array_keys($menu), array_keys($metaMenu)) as $href) {
+        foreach (array_keys(getMenu()) as $href) {
             if (preg_match("@^$href@", $_SERVER['REQUEST_URI'])) {
                 return $href;
             }

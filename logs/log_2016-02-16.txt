@@ -1,5 +1,0 @@
-2016-02-16 15:44:51 - INFO --> Show detail view of event ID: 1, Name: Foo Fighters, StartTime: 2013-01-15T19:00:00Z, Artist -> Name: Foo Fighters, Description: Foo Fighters ist die Band um den ehem..., Videos: yes
-2016-02-16 15:49:24 - INFO --> New customer successfully stored to database: ID: 2, Username: abbts, Name: Jenzer Marc, Email: marc.jenzer@semabit.ch
-2016-02-16 15:53:45 - INFO --> Customer successfully logged in: ID: 2, Username: abbts, Name: Jenzer Marc, Email: marc.jenzer@semabit.ch
-2016-02-16 15:55:39 - INFO --> Customer successfully logged in: ID: 2, Username: abbts, Name: Jenzer Marc, Email: marc.jenzer@semabit.ch
-2016-02-16 16:43:46 - INFO --> Show detail view of event ID: 1, Name: Foo Fighters, StartTime: 2013-01-15T19:00:00Z, Artist -> Name: Foo Fighters, Description: Foo Fighters ist die Band um den ehem..., Videos: yes

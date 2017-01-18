@@ -4,11 +4,8 @@ class EventListView extends View {
 
     public function display() {
         echo "<h1>Alle Events</h1>";
-        foreach ($this->list as $event) {
-            $date = new DateTime($event->getStarttime());
-            $date->setTimezone(new DateTimeZone('Europe/Zurich'));
-            $startTime = $date->format('d.m.Y H:i');
-
+        foreach ($this->vars['list'] as $event) {
+            $startTime = date("d.m.Y H:i", $event->getStarttime());
             $url = URI_EVENTS . "/{$event->getId()}-" . Controller::encodeUrl("{$event->getName()}-{$startTime}");
             $artist = $event->getArtist();
             echo <<<EVENT
