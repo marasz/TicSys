@@ -1,68 +1,87 @@
 <?php
-include_once 'controller/Controller.php';
 
-class ContactController extends Controller
-{
-    public function index()
-    {
-        if (!empty($_POST['contactform_submit'])) {
-            header("HTTP/1.1 303 See Other");
-            header("Location: " . "success");
+include_once 'controller/Controller.php';
+include_once 'view/View.php';
+include_once 'view/contact/ContactInitView.php';
+include_once 'view/contact/ContactConfirmationView.php';
+
+class ContactController extends Controller {
+
+    private $notification;
+
+    protected function init() {
+        $view = new ContactInitView();
+        $view->assign('notification', $this->notification);
+        $view->assign('contactUri', URI_KONTAKT);
+        $message = "";
+        if (!empty($_POST['message'])) {
+            $message = $_POST['message'];
+        }
+        $view->assign('message', $message);
+        $view->assign('messageClasses', $this->getRequiredCssClass('message'));
+        $view->assign('validatedSubject', $this->validate('subject', true));
+        $view->assign('validatedlastName', $this->validate('last_name'));
+        $view->assign('validatedFirstName', $this->validate('first_name'));
+        $view->assign('validatedPhone', $this->validate('phone'));
+        $view->assign('validatedEmail', $this->validate('email', true));
+        $view->display();
+    }
+
+    protected function create() {
+        if ((!empty($_POST['contact'])) && (empty($_POST['name']))) {
+            // Form submitted by human
+            // validate form
+            $valid = true;
+            $valid &=!empty($_POST['subject']);
+            $valid &=!empty($_POST['message']);
+            $valid &=!empty($_POST['email']);
+
+            if ($valid) {
+                $message = "Vom Benutzer erfasste Daten:\n\n";
+                foreach ($_POST as $key => $value) {
+                    $message .= "$key: $value\n";
+                }
+                mail("jem@semabit.ch", "TicSys - Kontaktformular", $message);
+                header("HTTP/1.1 303 See Other");
+                header("Location: " . URI_KONTAKT . "/success");
+                exit();
+            } else {
+                $this->notification = "Bitte füllen Sie alle markierten Felder aus.";
+                $this->init();
+            }
         }
     }
 
-    protected function show()
-    {
-// TODO: Implement show() method.
+    protected function index() {
+        if (preg_match('@/success$@i', $_SERVER['REQUEST_URI'])) {
+            // show confirmation page
+            $view = new ContactConfirmationView();
+            $view->display();
+        }
     }
 
-    protected function init()
-    {
-        echo <<<'Form'
-
-<form id="contactform" action="{URI_KONTAKT}" method="post" name="contactform">
-    <label for="contactform-subject">Betreff</label>
-    <input type="text" id="contactform-subject" name="subject" required>
-
-    <label for="contactform-message">Mitteilung</label>
-    <textarea id="contactform-message" name="message" rows="8" cols="50" required></textarea>
-
-    <label for="contactform-name">Name</label>
-    <input type="text" id="contactform-name" name="name" required>
-
-    <label for="contactform-first_name">Vorname</label>
-    <input type="text" id="contactform-first_name" name="first_name" required>
-
-    <label for="contactform-phone">Telefon-Nr.</label>
-    <input type="text" id="contactform-phone" name="phone">
-
-    <label for="contactform-email">Email-Adresse</label>
-    <input type="text" id="contactform-email" name="email" required>
-
-    <label for="contactform-newsletter">Newsletter abonnieren</label>
-    <input type="checkbox" id="contactform-newsletter" name="newsletter" checked>
-
-    <input type="hidden" name="contact" value="1">
-    <input type="submit" name="contactform_submit" value="Senden">
-</form>
-
-Form;
+    protected function show() {
+        echo "not implemented";
     }
 
-    protected function create()
-    {
-        echo "<p>Vielen Dank für Ihre Anfrage, wir setzen uns sobald wie möglich mit Ihnen in Verbindung.</p>";
-        $this->init();
+    private function validate($key, $required = false) {
+        $ret = "";
+        if (!empty($_POST[$key])) {
+            $ret .= "value=\"{$_POST[$key]}\"";
+        }
+        if ($required) {
+            $ret .= $this->getRequiredCssClass($key);
+        }
+        return $ret;
     }
 
-    public function new()
-    {
-        $this->init();
-    }
-
-    public function success()
-    {
-        $this->create();
+    private function getRequiredCssClass($key) {
+        $class = "required";
+        if ((!empty($_POST['contact'])) && (empty($_POST[$key]))) {
+            $class .= " missing";
+        }
+        return "class=\"$class\"";
     }
 
 }
+

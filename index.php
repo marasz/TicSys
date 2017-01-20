@@ -1,52 +1,102 @@
-<!DOCTYPE html>
+﻿<!doctype html>
 <?php
 include_once 'config/config.php';
-include_once 'controller/Controller.php';
 ?>
-<html>
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="There's a lot to do.">
-    <meta name="author" content="Mauro">
-    <link rel="stylesheet" href="/style.css">
-    <title>Hello World</title>
-</head>
+<html lang="de">
+    <head>
+        <title>TicSys</title>
+        <meta name="description" content="TicSys ist eine Applikation zum Vertrieb von Event-Eintrittskarten.">
+        <meta name="author" content="Marc Jenzer">
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="/css/normalize.css">
+        <link rel="stylesheet" type="text/css" href="/css/application.css">
+        <script src="/js/vendor/jquery-1.8.3.min.js"></script>
+        <script src="/js/application.js"></script>
+        <script src="/js/timer.js"></script>
+    </head>
+    <body onload="setDateTime()">
 
-<body>
-<a href="<?php echo URI_KONTAKT ?>"><img id="feedbackimg" src="/images/feedback.png"></a>
-<div id="wrapper">
-    <header>
-        <img src="/images/logo-black.png">
-    </header>
-        <nav>
-            <ul class="navUl">
+        <div id="wrap">
+            <div id="header">
+                <div id="logo">
+                    <a href="/home"><img src="/images/logo-white.png" alt="TicSys Logo" width="295" height="70" /></a>
+                </div>
+            </div>
 
-                <?php
-                $navigation = Controller::getMenu();
-                foreach ($navigation as $href => $title) {
-                    $liContent = $title;
-                    if ($href != strtolower($_SERVER['REQUEST_URI'])) {
-                        $liContent = "<a href=\"$href\">$title</a>";
+            <div id="menu">
+                <ul>
+                    <?php
+                    $currentUri = getCurrentURI();
+                    foreach (getMenu() as $href => $title) {
+                        echo "<li><a href=\"$href\" " . (($href == $currentUri) ? "class=\"selected\" " : "") . ">$title</a></li>\n";
                     }
-                    echo "<li class=\"navLi\">$liContent</li>\n";
+                    ?>
+                </ul>
+            </div>
+
+            <div id="content">
+                <?php
+                $controller = null;
+                switch (getCurrentURI()) {
+                    case URI_EVENTS:
+                        include_once 'controller/EventController.php';
+                        $controller = new EventController();
+                        break;
+                    case URI_FAQ:
+                        include_once 'controller/FAQController.php';
+                        $controller = new FAQController();
+                        break;
+                    case URI_KONTAKT:
+                        include_once 'controller/ContactController.php';
+                        $controller = new ContactController();
+                        break;
+                    default :
+                        include_once 'controller/HomeController.php';
+                        $controller = new HomeController();
+                        break;
                 }
-
+                if ($controller != null) {
+                    $controller->route();
+                }
                 ?>
-            </ul>
-        </nav>
+            </div>
 
-    <div id="content" class="content">
-        <?php
-           Controller::route();
-        ?>
-
-    </div>
-    <footer>
-        <p>Copyright &copy; 2012 -
-            <?php echo date('Y') ?> TicSys</p>
-    </footer>
-</div>
-</body>
+            <div id="footer">
+                <p>Copyright &copy; 2012 TicSys, <span id="datetime"><?php echo date("d.m.Y H:i:s"); ?></span></p>
+            </div>
+        </div>
+        <a id="feedback" href="<?php echo URI_KONTAKT ?>"><img src="/images/feedback.png" border="0"></a>
+    </body>
 </html>
+<?php
+
+/**
+ * @return array containing all menu items in format [base href] => [title]
+ */
+function getMenu() {
+    return array(
+        URI_HOME => 'Home',
+        URI_EVENTS => 'Events',
+        URI_FAQ => 'FAQ',
+        URI_KONTAKT => 'Kontakt'
+    );
+}
+
+/**
+ * @return string the requested menu item URI
+ */
+function getCurrentURI() {
+    $menu = getMenu();
+    if (array_key_exists($_SERVER['REQUEST_URI'], $menu)) {
+        return $_SERVER['REQUEST_URI'];
+    } else {
+        foreach (array_keys(getMenu()) as $href) {
+            if (preg_match("@^$href@", $_SERVER['REQUEST_URI'])) {
+                return $href;
+            }
+        }
+    }
+    return key($menu);
+}
+?>

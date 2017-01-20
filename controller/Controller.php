@@ -1,55 +1,77 @@
 <?php
 
-abstract class Controller
-{
+/**
+ * abstract class for all controllers 
+ *
+ * @author Marc Jenzer
+ */
+abstract class Controller {
+
+    protected $resourceId;
+
+    /**
+     * Reads collection data from model 
+     * and assigns values to dedicated view template
+     */
     abstract protected function index();
 
+    /**
+     * Reads data of a single resource from model 
+     * and assigs values to dedicated view template 
+     */
     abstract protected function show();
 
+    /**
+     * creates a new empty instance of the resource 
+     */
     abstract protected function init();
 
+    /**
+     * validates and stores sent user data of a newly created resource
+     */
     abstract protected function create();
 
-    public static function route()
-    {
-        $controller = 'homeController';
-        $method = 'index';
-        $params = [];
-
-        $url = self::parseURL();
-
-        if(file_exists('controller/' . $url[0] . 'Controller.php')){
-            $controller = $url[0] . 'Controller';
-            unset($url[0]);
+    public function route() {
+        switch ($_SERVER['REQUEST_METHOD']) {
+            case 'GET':
+                $matches = array();
+                if (preg_match("@^.*/([0-9]+)@", $_SERVER['REQUEST_URI'], $matches)) {
+                    $this->resourceId = $matches[1];
+                    $this->show();
+                } elseif (preg_match("@/new$@", $_SERVER['REQUEST_URI'])) {
+                    $this->init();
+                } else {
+                    $this->index();
+                }
+                break;
+            case 'POST':
+                $this->create();
+                break;
+            default:
+                break;
         }
-        require_once 'controller/' . $controller . '.php';
-        $controller = new $controller;
-
-        if(isset($url[1])){
-            if(method_exists($controller, $url[1])){
-                $method = $url[1];
-                unset($url[1]);
-            }
-        }
-
-        $params = $url ? array_values($url) : [0];
-
-        call_user_func_array([$controller, $method], $params);
     }
 
-    public static function parseURL()
-    {
-        return $url = explode('/',filter_var(rtrim(ltrim($_SERVER['REQUEST_URI'], '/'),'/'),FILTER_SANITIZE_URL));
-    }
-
-    public static function getMenu(){
-        $navigation = array(
-            '/' . URI_HOME => 'Home',
-            '/' . URI_EVENTS => 'Events',
-            '/' . URI_FAQ => 'FAQ',
-            '/' . URI_KONTAKT => 'Kontakt'
+    public static function encodeUrl($url) {
+        $specialChars = array(
+            "ä" => "ae",
+            "ö" => "oe",
+            "ü" => "ue",
+            "é|ê|è" => "e",
+            "á|â|à" => "a",
+            "ç" => "c"
         );
-        return $navigation;
+        foreach ($specialChars as $find => $replace) {
+            $url = preg_replace("/($find)/i", $replace, $url);
+        }
+        // Replace whitespace chars
+        $url = preg_replace('/\s/', '-', $url);
+        // Remove all remaining disallowed chars
+        $url = preg_replace('/[^a-zA-Z0-9_\-\.]/', '', $url);
+        // Replace multiple '-' chars with a single '-'
+        $url = preg_replace('/(\-)+/', '-', $url);
+        return $url;
     }
 
 }
+

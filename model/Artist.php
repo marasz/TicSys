@@ -1,61 +1,63 @@
 <?php
 
-class Artist
-{
-    private $name;
-    private $descrition;
-    private $picture;
-    private $thumbnail;
-    private $videos;
+class Artist {
 
-    /**
-     * Artist constructor.
-     * @param string $name
-     * @param string $descrition
-     * @param string $picturePath
-     * @param string $thumbnailPath
-     */
-    public function __construct(string $name, string $descrition, string $picturePath, string $thumbnailPath)
-    {
+    private $name;
+    private $image;
+    private $imageThumb;
+    private $description;
+    private $videos = array();
+
+    function __construct($name = "", $image = "", $imageThumb = "", $description = "") {
         $this->name = $name;
-        $this->descrition = $descrition;
-        $this->picture = $picturePath;
-        $this->thumbnail = $thumbnailPath;
+        $this->image = $image;
+        $this->imageThumb = $imageThumb;
+        $this->description = $description;
     }
 
-    /**
-     * @return string
-     */
-    public function getName() : string
-    {
+    public function getName() {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription() : string
-    {
-        return $this->descrition;
+    public function setName($name) {
+        $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
-    public function getPicturePath() : string
-    {
-        return $this->picture;
+    public function getImage() {
+        return $this->image;
     }
 
-    /**
-     * @return string
-     */
-    public function getThumbnailPath() : string
-    {
-        return $this->thumbnail;
+    public function setImage($image) {
+        $this->image = $image;
     }
 
+    public function getImageThumb() {
+        return $this->imageThumb;
+    }
 
+    public function setImageThumb($imageThumb) {
+        $this->imageThumb = $imageThumb;
+    }
 
+    public function getDescription() {
+        return $this->description;
+    }
+
+    public function setDescription($description) {
+        $this->description = $description;
+    }
+
+    public function getVideos() {
+        return $this->videos;
+    }
+
+    public function setVideos(array $videos) {
+        $this->videos = $videos;
+    }
+    
+    public function addVideo(Video $video) {
+        $this->videos[] = $video;
+    }
 
 }
+
