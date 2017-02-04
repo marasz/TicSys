@@ -20,5 +20,13 @@ class MusicEvent extends Event {
         $this->artist = $artist;
     }
 
+    public function __toString()
+    {
+        $string = 'Name: ' . parent::getName() . '\n';
+        $string .= 'Starttime: ' . parent::getStarttime() - '\n';
+        $string .= 'Id: ' . parent::getId()  . '\n';
+        return $string;
+    }
+
 }
 

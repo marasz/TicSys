@@ -1,25 +1,27 @@
 <?php
 
-include_once 'lib/CSVAdapter.php';
+include_once 'lib/XMLAdapter.php';
+include_once 'lib/EventListXMLAdapter.php';
 include_once 'controller/Controller.php';
 include_once 'model/Event.php';
 include_once 'model/MusicEvent.php';
 include_once 'model/Artist.php';
+include_once 'model/Video.php';
 include_once 'view/View.php';
 include_once 'view/home/HomeView.php';
 
 class HomeController extends Controller {
 
-    private $csvAdapter;
+    private $adapter;
 
     function __construct() {
-        $this->csvAdapter = new CSVAdapter("{$_SERVER['DOCUMENT_ROOT']}/resources/eventlist.csv");
+        $this->adapter = new EventListXMLAdapter("{$_SERVER['DOCUMENT_ROOT']}/resources/eventlist.xml");
     }
 
     protected function index() {
-        $eventList = $this->csvAdapter->getEventList();
+        $eventList = $this->adapter->getEventList();
         $view = new HomeView();
-        $view->assign('list', $eventList);
+        $view->list = $eventList;
         $view->display();
     }
 

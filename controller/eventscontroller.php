@@ -5,7 +5,7 @@ include_once 'model/Event.php';
 include_once 'model/MusicEvent.php';
 include_once 'model/Artist.php';
 
-$csvAdapter = new CSVAdapter("{$_SERVER['DOCUMENT_ROOT']}/resources/eventlist.csv");
+$csvAdapter = new EventListXMLAdapter("{$_SERVER['DOCUMENT_ROOT']}/resources/eventlist.csv");
 
 $baseUrl = URI_EVENTS; // needed since constants cannot be used in heredoc
 $matches = array();

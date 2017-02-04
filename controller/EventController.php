@@ -1,35 +1,43 @@
 <?php
 
-include_once 'lib/CSVAdapter.php';
+include_once 'lib/XMLAdapter.php';
+include_once 'lib/EventListXMLAdapter.php';
 include_once 'controller/Controller.php';
 include_once 'model/Event.php';
 include_once 'model/MusicEvent.php';
 include_once 'model/Artist.php';
+include_once 'model/Video.php';
 include_once 'view/View.php';
 include_once 'view/event/EventListView.php';
 include_once 'view/event/EventDetailView.php';
 
 class EventController extends Controller {
 
-    private $csvAdapter;
+    private $dataAdapter;
 
     function __construct() {
-        $this->csvAdapter = new CSVAdapter("{$_SERVER['DOCUMENT_ROOT']}/resources/eventlist.csv");
+        $this->dataAdapter = new EventListXMLAdapter("{$_SERVER['DOCUMENT_ROOT']}/resources/eventlist.xml");
     }
 
     protected function index() {
-        $eventList = $this->csvAdapter->getEventList();
+        $eventList = $this->dataAdapter->getEventList();
         $view = new EventListView();
-        $view->assign('list', $eventList);
+        $view->list = $eventList;
         $view->display();
     }
 
     protected function show() {
-        $event = $this->csvAdapter->getEvent($this->resourceId);
+        $log = new Katzgrau\KLogger\Logger($_SERVER['DOCUMENT_ROOT'] . '/logs/', Psr\Log\LogLevel::INFO);
+        $event = $this->dataAdapter->getEvent($this->resourceId);
         if (!empty($event)) { // Event with transmitted ID was found
+            $log->info('Show detail view of event ' . $this->resourceId);
+            $log->info('Event-Name: ' . $event ->getName());
+            $log->info('Event-Starttime: ' . $event ->getStarttime());
             $view = new EventDetailView();
-            $view->assign('event', $event);
+            $view->event = $event;
             $view->display();
+        } else {
+            $log->error('Unable to find event with id ' . $this->resourceId);
         }
     }
 

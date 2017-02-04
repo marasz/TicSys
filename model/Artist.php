@@ -54,9 +54,20 @@ class Artist {
     public function setVideos(array $videos) {
         $this->videos = $videos;
     }
-    
+
     public function addVideo(Video $video) {
         $this->videos[] = $video;
+    }
+
+    public function hasVideos() {
+        return !empty($this->videos);
+    }
+
+    public function __toString()
+    {
+        $string = 'Name: ' . $this->getName() . '\n';
+        $string .= 'Description: ' . $this->getDescription() - '\n';
+        return $string;
     }
 
 }
