@@ -29,4 +29,4 @@ CREATE TABLE IF NOT EXISTS `customers` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 # Add user
-GRANT ALL ON ticsys.* TO sysuser@localhost IDENTIFIED BY "dU3BdUej";
+GRANT ALL ON ticsys.* TO homestead@localhost IDENTIFIED BY 'secret';
