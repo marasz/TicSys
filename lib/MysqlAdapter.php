@@ -49,6 +49,14 @@ final class MysqlAdapter {
         return $list;
     }
 
+    public function store($table, array $data){
+        $sql  = "INSERT INTO $table";
+        $sql .= " (`".implode("`, `", array_keys($data))."`)";
+        $sql .= " VALUES ('".implode("', '", $data)."') ";
+        $this->con->query($sql) or die($this->con->error);
+        $this->close();
+    }
+
     public function __sleep() {
         return array('host', 'user', 'password', 'db');
     }
