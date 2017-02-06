@@ -57,6 +57,16 @@ final class MysqlAdapter {
         $this->close();
     }
 
+    public function get($table, array $data){
+        $sql  = "SELECT * FROM $table WHERE ";
+        foreach ($data as $key => $value){
+            $sql .= "$key = $value";
+            $sql .= " OR ";
+        }
+        $this->con->query($sql) or die($this->con->error);
+        $this->close();
+    }
+
     public function __sleep() {
         return array('host', 'user', 'password', 'db');
     }
